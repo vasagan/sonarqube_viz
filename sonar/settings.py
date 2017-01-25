@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'xdh8oz^9s@-+-fzsmyun4383zkntxhq(f=669j8(#qt*l=xl5x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['hotvld311.sgdcelab.sabre.com', 'localhost', '127.0.0.1']
 
