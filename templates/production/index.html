@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> TTS Sonar Metrics </title>
+
+    <!-- Bootstrap -->
+    <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="/static/build/css/custom.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/gstatic_loader.js"></script>
+
+
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="http://127.0.0.1:8000" class="site_title"><i class="fa fa-paw"></i> <span>TTS Metrics</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>Applications</h3>
+                <ul class="nav side-menu">
+                  {% for comp in components %}
+                    <li><a href="http://127.0.0.1:8000/component/{{ comp.project_id }}"><i class="fa fa-bar-chart-o"></i> {{ comp.project_name }} <span class="fa fa-chevron-right"></span></a></li>
+                  {% endfor %}
+
+                </ul>
+              </div>
+
+
+            </div>
+            <!-- /sidebar menu -->
+
+
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+
+            </nav>
+            <h3 class="center">&emsp;
+            {% if current_comp != None %}
+               {{ current_comp.project_name }} <small> ({{ current_comp.project_key }}) </small>
+            {% else %}
+              {{ components.0.project_name }} <small> ({{ components.0.project_key }}) </small>
+            {% endif %}
+
+          </h3></div>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+
+          <div class="modal fade" role="dialog" id="loadingModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body" id="data_error">
+                  <i class="fa fa-refresh fa-spin fa-5x fa-fw blue"></i><h3>Sketching...<i class="fa fa-paint-brush fa-0x fa-fw"></i></h3>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- top tiles -->
+          <div class="row tile_count">
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-folder-open-o"></i> Directories</span>
+              <div class="count purple" id="directories">01</div>
+
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-file-code-o"></i> Files</span>
+              <div class="count aero" id="files">02</div>
+
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-code"></i> Lines of code</span>
+              <div class="count dark" id="lines">03</i></div>
+
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-clone"></i> Classes</span>
+              <div class="count green" id="classes">04</div>
+
+
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-code-fork"></i> Functions</span>
+              <div class="count" id="functions">05</div>
+
+
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-comments-o"></i> Percentage of comments</span>
+              <div class="count blue" id="comments_percentage">06</div>
+
+            </div>
+          </div>
+          <!-- /top tiles -->
+
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="dashboard_graph">
+
+                <div class="row x_title">
+                  <div class="col-md-6">
+                    <h3>Metrics History</h3>
+                  </div>
+                  <div class="col-md-6">
+                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                      <span></span> <b class="caret"></b>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-8 col-sm-8 col-xs-12">
+
+
+                    <div id="mani2" class="demo-placeholder " style="width: 100%; height:320px;">
+
+                    </div>
+
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12 bg-white">
+                  <div class="x_title">
+                    <h2>Violations</h2>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="col-md-12 col-sm-12 col-xs-6">
+
+                    <div id="mani3">
+
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+
+          </div>
+          <br />
+
+          <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel tile" style="width: 100%; height:300px;">
+                <div class="x_title">
+                  <h2>Manual Vs Automated Test Cases</h2>
+
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content" id="test_cases">
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                  <h2>Complexity</h2>
+
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content" id="complexity">
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                  <h2>Unit Test Coverage</h2>
+
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content" id="coverage">
+
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel tile" style="width: 100%; height:400px;">
+                <div class="x_title">
+                  <h2>Unit Tests Success Rate</h2>
+
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content" id="unit_test">
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel tile" style="width: 100%; height:300px;">
+                <div class="x_title">
+                  <h2>Overall Progress of Project</h2>
+
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content" id="overall">
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            All rights reserved by <a href="https://sabre.com">Sabre</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="/static/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="/static/vendors/moment/min/moment.min.js"></script>
+    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- Custom Scripts -->
+    <script src="/static/sonar.js"></script>
+    <!-- Google Visualization Charts Scripts -->
+
+
+  <script type="text/javascript">
+
+      function loadMeta(data){
+          console.log(data[0]);
+          $("#directories").html(data[0]);
+          $("#files").html(data[1]);
+          $("#lines").html(data[2]);
+          $("#classes").html(data[3]);
+          $("#functions").html(data[4]);
+          $("#comments_percentage").html(data[5]);
+    }
+
+
+    function loadTechDebt(data){
+          var data = google.visualization.arrayToDataTable(data);
+
+        var options = {
+        chart: {
+          title: 'Technical debt plotted against lines of code'
+        },
+        width: 800,
+        height: 300,
+        series: {
+        // Gives each series an axis name that matches the Y-axis below.
+          0: {axis: 'Debt'},
+          1: {axis: 'Lines'}
+        },
+        axes: {
+          // Adds labels to each axis; they don't have to match the axis names.
+          y: {
+            Debt: {label: 'Technical Debt (hours)'},
+            Lines: {label: 'Lines of Code'}
+          }
+        }
+      };
+        var chart = new google.charts.Line(document.getElementById('mani2'));
+        chart.draw(data, options);
+    }
+
+    function loadViolations(data){
+          var data = google.visualization.arrayToDataTable(data);
+
+         var options = {
+         hAxis: {
+          title: 'Number of violations',
+          minValue: 0,
+        },
+        vAxis: {
+          title: 'Category'
+        },
+        bars: 'horizontal'
+      };
+      var chart = new google.charts.Bar(document.getElementById('mani3'));
+      chart.draw(data, options);
+    }
+
+
+    function loadComplexity(data){
+       var data = google.visualization.arrayToDataTable(data);
+
+         var options = {
+          title: 'Complexity',
+          curveType: 'function',
+          pointSize:2,
+          lineWidth:2,
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('complexity'));
+
+        chart.draw(data, options);
+
+    }
+
+    function loadCoverage(data){
+       var data = google.visualization.arrayToDataTable(data);
+
+         var options = {
+          title: 'Unit Test Coverage',
+          curveType: 'function',
+          pointSize:2,
+          lineWidth:2,
+          legend: {position: 'bottom'}
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('coverage'));
+
+        chart.draw(data, options);
+
+    }
+
+    function loadUnitTest(data){
+
+       var data = google.visualization.arrayToDataTable(data);
+
+         var options = {
+        chart: {
+          title: 'Total number of unit tests Vs Failed unit tests'
+        },
+        curveType: 'function',
+        width: 1200,
+        height: 300,
+        series: {
+          // Gives each series an axis name that matches the Y-axis below.
+          0: {axis: 'Total'},
+          1: {axis: 'Failed'}
+        },
+        axes: {
+          // Adds labels to each axis; they don't have to match the axis names.
+          y: {
+            Total: {label: 'Total Unit Tests'},
+            Failed: {label: 'Unit Tests Failed'}
+          }
+        }
+      };
+        var chart = new google.charts.Line(document.getElementById('unit_test'));
+        chart.draw(data, options);
+
+    }
+
+    function loadTestCases(data){
+
+       var data = google.visualization.arrayToDataTable(data);
+
+         var options = {
+            title: 'Total Test Cases along with Manual and Automatic Test Cases',
+            curveType: 'function',
+            pointSize:2,
+            lineWidth:2,
+            legend: {position: 'bottom', textStyle: {color: 'blue', fontSize: 16}, alignment: 'center'}
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('test_cases'));
+
+        chart.draw(data, options);
+
+    }
+
+
+    function loadOverall(data){
+
+       var data = google.visualization.arrayToDataTable(data);
+
+         var options = {
+            title: 'Overall Progress',
+            curveType: 'function',
+            pointSize:2,
+            lineWidth:2,
+            legend: {position: 'bottom', textStyle: {color: 'blue', fontSize: 16}, alignment: 'center'}
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('overall'));
+
+        chart.draw(data, options);
+
+    }
+
+
+    function loadData (startDate, endDate) {
+
+        console.log(startDate + endDate);
+         var request=new XMLHttpRequest();
+         request.onreadystatechange = function() {
+            if (request.readyState == 4 && request.status == 200) {
+            //alert('mani');
+            var jsonData = request.responseText;
+            parsedData = JSON.parse(jsonData);
+            if(parsedData.error)
+              {
+                $("#data_error").html("<i class='fa fa-bullhorn fa-5x fa-fw red'></i><h3>"+parsedData.error+"</h3>");
+                setTimeout(function(){
+                $("#loadingModal").modal('hide');
+                setTimeout(function(){
+
+                $("#data_error").html("<i class='fa fa-refresh fa-spin fa-5x fa-fw blue'></i><h3>Sketching...<i class='fa fa-paint-brush fa-0x fa-fw'></i></h3>");
+                }, 1000);
+
+                }, 2000);
+
+
+              }
+            else{
+                console.log(parsedData);
+                //drawChart(jsonData);
+                $("#loadingModal").modal('hide');
+                loadMeta(parsedData.meta);
+                loadTechDebt(parsedData.tech_debt);
+                loadViolations(parsedData.violations);
+                loadComplexity(parsedData.complexity);
+                loadCoverage(parsedData.coverage);
+                loadUnitTest(parsedData.unit_tests);
+                loadTestCases(parsedData.test_case_numbers);
+                loadOverall(parsedData.overall);
+              }
+            }
+         }
+         var comp_id = "{{ current_comp.project_id }}"
+         var url  = "http://127.0.0.1:8000/api/" + comp_id + "/" + startDate + "/" + endDate
+         console.log(url);
+         request.open("GET", url, true);
+         request.send();
+  }
+  </script>
+
+  </body>
+</html>
