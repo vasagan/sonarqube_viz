@@ -29,11 +29,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 SONAR_USERNAME = ''
 SONAR_PASSWORD = ''
 
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
 
 # Application definition
 
@@ -133,3 +128,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
