@@ -1,0 +1,18 @@
+"""
+Django local settings for sonar project.
+
+please add approproate settings relevant to your Environment
+
+"""
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = ''
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+#Auth credentials for your sonar tool
+SONAR_USERNAME = ''
+SONAR_PASSWORD = ''

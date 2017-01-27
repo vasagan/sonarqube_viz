@@ -26,7 +26,7 @@ def chart(request, component_id, start_date, end_date):
               "critical_violations,major_violations,minor_violations,complexity,branch_coverage,line_coverage,coverage,tests,test_errors,comment_lines"
     fromDate = (start_date+(diff*5)).isoformat()
     url = 'https://sonar.sabre.com/api/timemachine/index?resource='+component_id+'&metrics='+metrics+'&fromDateTime='+ fromDate + '&toDateTime=' + end_date.isoformat()
-    api_response = requests.get(url, auth=('sg0958026', 'Nh#zxq88qh'))
+    api_response = requests.get(url, auth=(settings.SONAR_USERNAME, settings.SONAR_PASSWORD))
 
     js=api_response.json()
     items = js[0]["cells"]
