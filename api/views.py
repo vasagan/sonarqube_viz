@@ -29,7 +29,7 @@ def chart(request, component_id, start_date, end_date):
     api_req = requests.Session()
     api_req.auth = (settings.SONAR_USERNAME, settings.SONAR_PASSWORD)
     try:
-        api_response = api_req.get(url, timeout = (3, 10))  # connection timeout =3 and response timeout = 6 seconds
+        api_response = api_req.get(url, timeout = (6, 15))  # connection timeout =3 and response timeout = 6 seconds
     except requests.exceptions.Timeout as e:
         resp = {'error': 'sonar.sabre.com seems to be slow. Pls try again'}
         return Response(resp)
