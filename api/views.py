@@ -26,10 +26,8 @@ def chart(request, component_id, start_date, end_date):
               "critical_violations,major_violations,minor_violations,complexity,branch_coverage,line_coverage,coverage,tests,test_errors,comment_lines"
     fromDate = (start_date+(diff*5)).isoformat()
     url = 'https://sonar.sabre.com/api/timemachine/index?resource='+component_id+'&metrics='+metrics+'&fromDateTime='+ fromDate + '&toDateTime=' + end_date.isoformat()
-    api_req = requests.Session()
-    api_req.auth = (settings.SONAR_USERNAME, settings.SONAR_PASSWORD)
     try:
-        api_response = api_req.get(url, timeout = (30, 30))  # connection timeout =30 and response timeout = 30 seconds
+        api_response = requests.get(url, auth=(settings.SONAR_USERNAME, settings.SONAR_PASSWORD), timeout=20)  # connection timeout =30 and response timeout = 30 seconds
     except requests.exceptions.Timeout as e:
         resp = {'error': 'sonar.sabre.com seems to be slow. Pls try again'}
         return Response(resp)
