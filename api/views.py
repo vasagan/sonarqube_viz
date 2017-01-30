@@ -27,7 +27,7 @@ def chart(request, component_id, start_date, end_date):
     fromDate = (start_date+(diff*5)).isoformat()
     url = 'https://sonar.sabre.com/api/timemachine/index?resource='+component_id+'&metrics='+metrics+'&fromDateTime='+ fromDate + '&toDateTime=' + end_date.isoformat()
     try:
-        api_response = requests.get(url, auth=(settings.SONAR_USERNAME, settings.SONAR_PASSWORD), timeout=40)  # connection timeout =30 and response timeout = 30 seconds
+        api_response = requests.get(url, auth=(settings.SONAR_USERNAME, settings.SONAR_PASSWORD), timeout=(6, 15))  # connection timeout =6 and response timeout = 15 seconds
     except requests.exceptions.Timeout as e:
         resp = {'error': 'sonar.sabre.com seems to be slow. Pls try again'}
         return Response(resp)
