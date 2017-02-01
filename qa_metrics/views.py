@@ -51,7 +51,7 @@ def qa_metrics_api(request, project_id, start_date, end_date):
     functional_coverage = [['Timeline', 'Functional Coverage']]
     for i in range(6):
         if date_level_values[i][2] != 0:
-            automated_percent = date_level_values[i][0]/date_level_values[i][2]
+            automated_percent = (date_level_values[i][0]/date_level_values[i][2])*100
         else:
             automated_percent =0
         parsed_date = parse(date_levels[i]).strftime('%d %b %y')
