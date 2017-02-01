@@ -13,13 +13,3 @@ class Components(models.Model):
         return self.project_name
 
 
-
-class TestCases(models.Model):
-    comp_id = models.ForeignKey(Components, on_delete=models.CASCADE)
-    as_on_date = models.DateTimeField()
-    automatic = models.IntegerField()
-    manual = models.IntegerField()
-
-    def __str__(self):
-        return self.comp_id.project_name
-

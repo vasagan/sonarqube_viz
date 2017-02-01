@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from dateutil.parser import parse
 from dateutil.relativedelta import *
-from components.models import TestCases, Components
+from components.models import Components
 import json
 
 
@@ -36,7 +36,6 @@ def chart(request, component_id, start_date, end_date):
     items = js[0]["cells"]
     if items:
         total_items = len(items)
-        test_cases = TestCases.objects.all().filter(comp_id__project_id=component_id).order_by('as_on_date')
         date_level_values = []
         for level in date_levels:
             item_value=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -49,20 +48,12 @@ def chart(request, component_id, start_date, end_date):
                     item_value = [data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9],data[10],data[11],data[12],data[13],data[14],data[15],data[16],data[17],data[18]]
                 else:
                     break
-            test_value = [0,0]
-            for test in test_cases:
-                if test.as_on_date <= parse(level):
-                    test_value=[test.manual, test.automatic]
-                else:
-                    break
-            item_value.extend(test_value)
             date_level_values.append(item_value)
 
         tech_debt = [['Timeline', 'Technical Debt (Hours)','Lines of code']]
         complexity = [['Timeline', 'Complexity']]
         coverage = [['Timelines', 'Condition Coverage', 'Line Coverage', 'Overall Coverage']]
         unit_tests = [['Timeline', 'Total Unit Tests','Failed Unit Tests']]
-        test_case_numbers = [['Timeline', 'Total Test Cases', 'Manual Test Cases','Automated Test Cases']]
         overall_progress = [['Timeline', 'Files', 'classes', 'functions','Comment Lines']]
         for i in range(6):
             parsed_date = parse(date_levels[i]).strftime('%d %b %y')
@@ -70,7 +61,6 @@ def chart(request, component_id, start_date, end_date):
             complexity.append([parsed_date, date_level_values[i][12]])
             coverage.append([parsed_date, date_level_values[i][13], date_level_values[i][9], date_level_values[i][15]])
             unit_tests.append([parsed_date, date_level_values[i][16], date_level_values[i][17]])
-            test_case_numbers.append([parsed_date, date_level_values[i][19]+date_level_values[i][20],  date_level_values[i][19], date_level_values[i][20]])
             overall_progress.append([parsed_date,date_level_values[i][1],date_level_values[i][3],date_level_values[i][4],date_level_values[i][18]])
 
         date_level_len = len(date_levels)
@@ -89,7 +79,7 @@ def chart(request, component_id, start_date, end_date):
         violations.append(['Minor', date_level_values[data_level_values_len - 2][11],date_level_values[data_level_values_len - 1][11]])
 
 
-        resp= {'meta': meta_data, 'tech_debt':tech_debt, 'violations': violations, 'complexity': complexity, 'coverage': coverage, 'unit_tests': unit_tests, 'test_case_numbers': test_case_numbers, 'overall': overall_progress}
+        resp= {'meta': meta_data, 'tech_debt':tech_debt, 'violations': violations, 'complexity': complexity, 'coverage': coverage, 'unit_tests': unit_tests, 'overall': overall_progress}
     else:
         resp={'error': 'No data returned for the time period'}
 

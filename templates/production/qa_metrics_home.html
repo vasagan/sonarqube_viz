@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> TTS Sonar Metrics </title>
+
+    <!-- Bootstrap -->
+    <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="/static/build/css/custom.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/gstatic_loader.js"></script>
+
+
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="{{ server_name }}" class="site_title"><i class="fa fa-paw"></i> <span>TTS Metrics</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>Applications</h3>
+                <ul class="nav side-menu">
+                   <li><a href="{{ server_name }}/qa/metrics"><i class="fa fa-bar-chart-o"></i> TTS QA Metrics <span class="fa fa-chevron-right"></span></a></li>
+                  {% for comp in components %}
+                    <li><a href="{{ server_name }}/component/{{ comp.project_id }}"><i class="fa fa-bar-chart-o"></i> {{ comp.project_name }} <span class="fa fa-chevron-right"></span></a></li>
+                  {% endfor %}
+
+                </ul>
+              </div>
+
+
+            </div>
+            <!-- /sidebar menu -->
+
+
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+
+            </nav>
+            <h3 class="center">&emsp;
+            TTS QA Metrics
+
+          </h3></div>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+
+          <div class="modal fade" role="dialog" id="loadingModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body" id="data_error">
+                  <i class="fa fa-refresh fa-spin fa-5x fa-fw blue"></i><h3>Sketching...<i class="fa fa-paint-brush fa-0x fa-fw"></i></h3>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- top tiles -->
+          <div class="row">
+
+            <div class="col-md-12">
+              <div class="x_panel tile" id="select_project" style="width: 100%;">
+
+                  <h3>Select Project :       <select class="btn btn-default" id="tts_project">
+                  {% for project in projects_list %}
+                    <option value="{{ project.project_id }}">{{ project.project_name }}</option>
+                  {% endfor %}
+                  </select>
+                  <div class="count green" id="selected_project" style="display:inline"></div>
+                  </h3>
+
+              </div>
+            </div>
+          </div>
+          <!-- /top tiles -->
+
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="dashboard_graph">
+
+                <div class="row x_title">
+                  <div class="col-md-6">
+                    <h3>Metrics History</h3>
+                  </div>
+                  <div class="col-md-6">
+                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                      <span></span> <b class="caret"></b>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+
+
+                    <div id="test_cases" class="demo-placeholder " style="width: 100%; height:320px;">
+
+                    </div>
+
+                </div>
+
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+
+          </div>
+          <br />
+
+          <div class="row">
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="x_panel tile" style="width: 100%; height:300px;">
+                <div class="x_title">
+                  <h2>Percentage of Automation</h2>
+
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content" id="percentage_automation">
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="x_panel tile" style="width: 100%; height:300px;">
+                <div class="x_title">
+                  <h2>Functional Coverage</h2>
+
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content" id="functional_coverage">
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            All rights reserved by <a href="http://www.sabre.com">Sabre</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="/static/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- bootstrap-daterangepicker -->
+    <script src="/static/vendors/moment/min/moment.min.js"></script>
+    <script src="/static/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- Custom Scripts -->
+    <script src="/static/sonar.js"></script>
+
+
+  <script type="text/javascript">
+
+
+  $("#tts_project").change(function(){
+      initLoad();
+      $("#loadingModal").modal({backdrop: 'static', keyboard: 'false'});
+  });
+
+
+
+    function loadTestCases(data){
+
+       var data = google.visualization.arrayToDataTable(data);
+
+         var options = {
+        title: 'Automated Vs Manual Test Cases',
+        isStacked: true,
+        hAxis: {
+          title: 'Number of Test Cases',
+        },
+        vAxis: {
+          title: 'Timeline'
+        }
+      };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('test_cases'));
+
+
+        chart.draw(data, options);
+
+    }
+
+    function loadPercentage(data){
+       var data = google.visualization.arrayToDataTable(data);
+
+         var options = {
+          title: 'Percentage of Automation',
+          curveType: 'function',
+          pointSize:2,
+          lineWidth:2,
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('percentage_automation'));
+
+        chart.draw(data, options);
+
+    }
+
+
+    function loadCoverage(data){
+       var data = google.visualization.arrayToDataTable(data);
+
+         var options = {
+          title: 'Functional Coverage',
+          curveType: 'function',
+          pointSize:2,
+          lineWidth:2,
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('functional_coverage'));
+
+        chart.draw(data, options);
+
+    }
+
+
+
+
+
+    function loadData (startDate, endDate) {
+
+        console.log(startDate + endDate);
+         var request=new XMLHttpRequest();
+         // var project_id = {{ projects_list.0.project_id }}
+         document.getElementById("selected_project").innerHTML = $('#tts_project').find(":selected").text();
+         var project_id = $('#tts_project').find(":selected").val();
+         server = "{{ server_name }}"
+         var url  = server + "/qa/metrics/" + project_id + "/" + startDate + "/" + endDate
+         console.log(url);
+         request.open("GET", url, true);
+         request.send();
+
+         request.onreadystatechange = function() {
+            if (request.readyState == 4 && request.status == 200) {
+            //alert('mani');
+            var jsonData = request.responseText;
+            parsedData = JSON.parse(jsonData);
+            if(parsedData.error)
+              {
+                console.log(parsedData);
+                $("#data_error").html("<i class='fa fa-bullhorn fa-5x fa-fw red'></i><h3>"+parsedData.error+"</h3>");
+                var err ="No data returned for the chosen period";
+                document.getElementById("test_cases").innerHTML = err;
+                document.getElementById("percentage_automation").innerHTML = err;
+                document.getElementById("functional_coverage").innerHTML = err;
+                setTimeout(function(){
+                $("#loadingModal").modal('hide');
+                setTimeout(function(){
+
+                $("#data_error").html("<i class='fa fa-refresh fa-spin fa-5x fa-fw blue'></i><h3>Sketching...<i class='fa fa-paint-brush fa-0x fa-fw'></i></h3>");
+                }, 1000);
+
+                }, 2000);
+
+
+              }
+            else{
+                console.log(parsedData);
+                //drawChart(jsonData);
+                $("#loadingModal").modal('hide');
+
+                loadTestCases(parsedData.test_cases);
+                loadPercentage(parsedData.automated_percentage);
+                loadCoverage(parsedData.functional_coverage);
+
+              }
+            }
+         }
+  }
+  </script>
+
+  </body>
+</html>
