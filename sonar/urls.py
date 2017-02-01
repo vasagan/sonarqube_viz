@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^component/(?P<comp_id>[0-9]+)/$', component_home, name='component_home'),
     url(r'^$', home, name='home'),
     url(r'^api/', include('api.urls')),
+    url(r'^qa/metrics/', include('qa_metrics.urls')),
 ]

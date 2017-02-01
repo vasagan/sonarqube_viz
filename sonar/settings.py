@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'components',
+    'qa_metrics',
 ]
 
 MIDDLEWARE = [
@@ -134,5 +135,5 @@ STATIC_ROOT = '/login/sg213154/project/sonar_tool/static_files/'
 
 SERVER_NAME = 'http://hotvld311.sgdcelab.sabre.com'
 
-#DEBUG = True
-#SERVER_NAME = 'http://127.0.0.01:8000'
+DEBUG = True
+SERVER_NAME = 'http://127.0.0.01:8000'
