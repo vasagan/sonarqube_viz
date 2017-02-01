@@ -46,7 +46,7 @@ def qa_metrics_api(request, project_id, start_date, end_date):
                 date_level_values[i]= [test.automatic_test_cases, test.manual_test_cases, test.automatic_test_cases+test.manual_test_cases, test.functional_coverage]
             i+=1
             continue
-    test_case_numbers = [['Timeline', 'Automated Test Cases', 'Manual Test Cases']]
+    test_case_numbers = [['Timeline', 'Automated', 'Manual']]
     automated_percentage = [['Timeline', 'Automation Percentage']]
     functional_coverage = [['Timeline', 'Functional Coverage']]
     for i in range(6):
