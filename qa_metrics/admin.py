@@ -9,7 +9,7 @@ class ProjectsAdmin(admin.ModelAdmin):
     list_filter = ( 'project_name', 'updated_on', 'remarks')
 
 class QaMetricsAdmin(admin.ModelAdmin):
-    list_display = ( 'project', 'as_on_date','functional_coverage')
+    list_display = ( 'project', 'as_on_date', 'sabre_defects_open', 'customer_defects_open', 'internal_defects_backlog', 'customer_defects_backlog', 'automatic_test_cases', 'manual_test_cases', 'functional_coverage')
     list_filter = ( 'project', 'as_on_date', 'functional_coverage')
 
 admin.site.register(Project, ProjectsAdmin)
