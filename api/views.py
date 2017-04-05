@@ -59,7 +59,7 @@ def chart(request, component_id, start_date, end_date):
             parsed_date = parse(date_levels[i]).strftime('%d %b %y')
             tech_debt.append([parsed_date, (date_level_values[i][6])//60, date_level_values[i][2]])
             complexity.append([parsed_date, date_level_values[i][12]])
-            coverage.append([parsed_date, date_level_values[i][13], date_level_values[i][9], date_level_values[i][15]])
+            coverage.append([parsed_date, date_level_values[i][13], date_level_values[i][14], date_level_values[i][15]])
             unit_tests.append([parsed_date, date_level_values[i][16], date_level_values[i][17]])
             overall_progress.append([parsed_date,date_level_values[i][1],date_level_values[i][3],date_level_values[i][4],date_level_values[i][18]])
 
