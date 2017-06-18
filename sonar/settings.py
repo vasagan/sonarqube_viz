@@ -27,8 +27,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['hotvld311.sgdcelab.sabre.com', 'localhost', '127.0.0.1']
 
-SONAR_USERNAME = 'sg0958026'
-SONAR_PASSWORD = 'Nh#zxq88qh'
+#SONAR_USERNAME = ''
+#SONAR_PASSWORD = ''
 
 
 # Application definition
