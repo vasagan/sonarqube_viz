@@ -5,7 +5,6 @@ from components.models import Components
 from qa_metrics.models import Project
 
 
-
 def home(request):
     components = list(Components.objects.values())
     current_comp = components[0]
